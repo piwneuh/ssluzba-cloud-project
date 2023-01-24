@@ -9,4 +9,4 @@ def professor_registration(request):
             form.save()
     else:
         form = ProfessorRegistrationForm()
-    return render(request, 'professor_registration.html', {'form:form'})
+    return render(request, 'professor_registration.html', {'form':form})

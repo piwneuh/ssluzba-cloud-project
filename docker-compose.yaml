@@ -19,7 +19,7 @@ services:
     ports:
       - "8002:8002"
 
-  uns:
+  uns_60:
     #build: ./uns
     build: piwneuh/ssluzba-cloud-project:uns
     restart: always
@@ -28,6 +28,26 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+        
+  uns_40:
+    #build: ./uns
+    build: piwneuh/ssluzba-cloud-project:uns
+    restart: always
+    ports:
+      - "3001:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+   
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./conf.d:/etc/nginx/conf.d
+    depends_on:
+      - uns_60
+      - uns_40
+    ports:
+      - "80:80"
                
   postgres:
     image: postgres:latest
@@ -42,4 +62,3 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-

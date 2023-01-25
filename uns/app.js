@@ -35,11 +35,15 @@ class Professor {
     }
 }
 
+var count = 0;
+
 // Use body-parser middleware
 app.use(bodyParser.json());
 
 // API endpoint for creating a new student
 app.post('/student', (req, res) => {
+    count += 1;
+    console.log("Counter is at: " + count)
     const { first_name, last_name, email } = req.body;
     // Check if student already exists in the database
     client.query('SELECT * FROM students WHERE email = $1', [email], (err, result) => {
@@ -70,6 +74,9 @@ app.post('/student', (req, res) => {
 
 // API endpoint for creating a new professor
 app.post('/professor', (req, res) => {
+    count += 1;
+    console.log("Counter is at: " + count)
+
     const { first_name, last_name, email } = req.body;
     // Check if professor already exists in the database
     client.query('SELECT * FROM "professors" WHERE email = $1', [email], (err, result) => {

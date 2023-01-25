@@ -23,7 +23,7 @@ def professor_registration(request):
     return render(request, 'professor_registration.html', {'form':form})
 
 def professor_to_uns(form):
-    url = 'http://uns:3000/professor'
+    url = 'http://nginx:80/professor'
     data = {
         'email': form.cleaned_data['email'],
         'first_name': form.cleaned_data['first_name'],

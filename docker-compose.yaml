@@ -5,6 +5,16 @@ services:
     build: ./ftn
     ports:
       - "8000:8000"
+  
+  pmf:
+    build: ./pmf
+    ports:
+      - "8001:8001"
+      
+  pravni:
+    build: ./pravni
+    ports:
+      - "8002:8002"
 
   uns:
     build: ./uns

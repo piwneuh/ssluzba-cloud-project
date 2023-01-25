@@ -47,6 +47,7 @@ app.post('/student', (req, res) => {
             console.log(err);
             res.status(500).send('Error checking for existing student');
         } else if (result.rows.length > 0) {
+            console.log('Student already exists');
             res.status(409).send('Student already exists');
         } else {
             // Create a new student
@@ -59,6 +60,7 @@ app.post('/student', (req, res) => {
                         console.log(err);
                         res.status(500).send('Error inserting student into the database');
                     } else {
+                        console.log('Student created');
                         res.status(201).send('Student created');
                     }
                 });
@@ -88,6 +90,7 @@ app.post('/professor', (req, res) => {
 						console.log(err);
 						res.status(500).send('Error inserting professor into the database');
 					} else {
+                        console.log('Professor created');
 						res.status(201).send('Professor created');
 					}
 				});

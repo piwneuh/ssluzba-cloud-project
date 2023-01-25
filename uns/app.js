@@ -6,13 +6,14 @@ const { v4: uuidv4 } = require('uuid');
 
 // Connect to PostgreSQL database
 const client = new Client({
-    host: 'localhost',
+    host: 'postgres',
     port: 5432,
-    user: 'admin',
+    user: 'postgres',
     password: 'super_secret',
-    database: 'mydb'
+    database: 'uns_db'
 });
 client.connect();
+createTables(client);
 
 // Define the Student model
 class Student {
@@ -38,7 +39,7 @@ class Professor {
 app.use(bodyParser.json());
 
 // API endpoint for creating a new student
-app.post('/students', (req, res) => {
+app.post('/student', (req, res) => {
     const { first_name, last_name, email } = req.body;
     // Check if student already exists in the database
     client.query('SELECT * FROM students WHERE email = $1', [email], (err, result) => {
@@ -66,20 +67,21 @@ app.post('/students', (req, res) => {
 });
 
 // API endpoint for creating a new professor
-app.post('/professors', (req, res) => {
+app.post('/professor', (req, res) => {
     const { first_name, last_name, email } = req.body;
     // Check if professor already exists in the database
-    client.query('SELECT * FROM professors WHERE email = $1', [email], (err, result) => {
+    client.query('SELECT * FROM "professors" WHERE email = $1', [email], (err, result) => {
         if (err) {
             console.log(err);
             res.status(500).send('Error checking for existing professor');
         } else if (result.rows.length > 0) {
+            console.log('Professor already exists');
 	    	res.status(409).send('Professor already exists');
 		} else {
 			// Create a new professor
 			const professor = new Professor(first_name, last_name, email);
 			// Insert professor into the database
-			client.query('INSERT INTO professors (id, first_name, last_name, email) VALUES ($1, $2, $3, $4)',
+			client.query('INSERT INTO "professors" (id, first_name, last_name, email) VALUES ($1, $2, $3, $4)',
 				[professor.id, professor.first_name, professor.last_name, professor.email],
 				(err, result) => {
 					if (err) {
@@ -97,3 +99,29 @@ app.post('/professors', (req, res) => {
 app.listen(3000, () => {
 	console.log('Server listening on port 3000');
 });
+
+async function createTables(client) {
+    try {
+        await client.query(`
+            CREATE TABLE IF NOT EXISTS students (
+                id UUID PRIMARY KEY,
+                first_name VARCHAR(255) NOT NULL,
+                last_name VARCHAR(255) NOT NULL,
+                email VARCHAR(255) UNIQUE NOT NULL
+            )
+        `);
+
+        await client.query(`
+            CREATE TABLE IF NOT EXISTS professors (
+                id UUID PRIMARY KEY,
+                first_name VARCHAR(255) NOT NULL,
+                last_name VARCHAR(255) NOT NULL,
+                email VARCHAR(255) UNIQUE NOT NULL
+            )
+        `);
+
+        console.log('Tables created successfully');
+    } catch (err) {
+        console.log(err);
+    }
+}

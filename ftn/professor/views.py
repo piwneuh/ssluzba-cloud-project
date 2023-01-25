@@ -3,9 +3,9 @@ from .forms import ProfessorRegistrationForm
 from .models import Professor
 
 # Create your views here.
-def registration_redirect(request):
-    return redirect('professor-registration')
-
+def home(request):
+    return render(request, 'home.html')
+    
 def professor_table(request):
     professors = Professor.objects.all()
     return render(request, 'professor_table.html', {'professors': professors})

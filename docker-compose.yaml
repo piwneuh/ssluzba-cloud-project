@@ -3,25 +3,25 @@ services:
   
   ftn:
     #build: ./ftn
-    build: piwneuh/ssluzba-cloud-project:ftn
+    image: piwneuh/ssluzba-cloud-project:ftn
     ports:
       - "8000:8000"
   
   pmf:
     #build: ./pmf
-    build: piwneuh/ssluzba-cloud-project:pmf
+    image: piwneuh/ssluzba-cloud-project:pmf
     ports:
       - "8001:8001"
       
   pravni:
     #build: ./pravni
-    build: piwneuh/ssluzba-cloud-project:pravni
+    image: piwneuh/ssluzba-cloud-project:pravni
     ports:
       - "8002:8002"
 
   uns_60:
     #build: ./uns
-    build: piwneuh/ssluzba-cloud-project:uns
+    image: piwneuh/ssluzba-cloud-project:uns
     restart: always
     ports:
       - "3000:3000"
@@ -31,7 +31,7 @@ services:
         
   uns_40:
     #build: ./uns
-    build: piwneuh/ssluzba-cloud-project:uns
+    image: piwneuh/ssluzba-cloud-project:uns
     restart: always
     ports:
       - "3001:3000"
